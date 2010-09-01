@@ -1,5 +1,9 @@
 Run ./install.sh to symlink dotfiles from ~/dotfiles/etc/ to ~/
 
+To autoupdate add the following to your ~/.(ba|z)shrc:
+
+~/.dotfiles/scripts/update.sh &
+
 Be aware - if you are going to use these dotfiles, make sure you change my personal settings.
 
 eg
