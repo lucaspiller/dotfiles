@@ -1,4 +1,4 @@
-Run ./install.rb to symlink dotfiles from ~/dotfiles/etc/ to ~/
+Run ./install.sh to symlink dotfiles from ~/dotfiles/etc/ to ~/
 
 Be aware - if you are going to use these dotfiles, make sure you change my personal settings.
 
