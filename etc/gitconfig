@@ -1,0 +1,20 @@
+[alias]
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+[apply]
+  whitespace = nowarn
+[branch]
+  autosetuprebase = always
+[color]
+  diff = auto
+  show = auto
+  status = auto
+  ui = true
+[core]
+  pager = less -FXRS
+  excludesfile = /Users/luca/.gitignore_global
+[github]
+  user = lucaspiller
+  token = cb95f8a91354fec7f4d6c26b321db6ff
+[user]
+  name = Luca Spiller
+  email = luca@stackednotion.com
