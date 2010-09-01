@@ -1,9 +1,6 @@
 # autoupdate dotfiles
 nohup ~/.dotfiles/scripts/update.sh 2>&1 > /dev/null
 
-# rvm
-if [ -s ~/.rvm/scripts/rvm ] ; then source ~/.rvm/scripts/rvm ; fi
-
 # Path to your oh-my-zsh configuration.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -25,3 +22,7 @@ export ZSH_THEME="macovsky"
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
+
+# rvm
+unsetopt auto_name_dirs
+if [ -s ~/.rvm/scripts/rvm ] ; then source ~/.rvm/scripts/rvm ; fi
