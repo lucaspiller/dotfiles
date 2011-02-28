@@ -7,30 +7,36 @@ set ruler
 " Show line numbers
 set number
 
-" Show $ at end of line and trailing space as ~
-set lcs=tab:\ \ ,eol:$,trail:~,extends:>,precedes:<
 set novisualbell  " No blinking .
 set noerrorbells  " No noise.
 set laststatus=2  " Always show status line.
 
-" Use 2 spaces for tabs, turn on automatic indenting
-set tabstop=2
-set smarttab
-set shiftwidth=2
 set autoindent
-set expandtab
+set smartindent
+
+" Use 2 spaces for tabs, turn on automatic indenting
+set tabstop=4 softtabstop=2 shiftwidth=2 expandtab
+set smarttab
 set backspace=start,indent
+
+" highlight tabs and trailing spaces
+set listchars=trail:.,tab:>-
+set list
 
 " Turn on highlighted search and syntax highlighting
 set hlsearch
 set incsearch
 syntax on
+set foldmethod=manual
 
 " Turn on line highlighting
 set cursorline " Commented out due to performance penalties
 
 " Set colorscheme
-colorscheme wombat 
+if has("gui_running")
+	colorscheme wombat
+	set guifont=Anonymous:h12
+endif 
 
 " Set backup directory
 set backupdir=~/.vim/tmp
@@ -41,7 +47,6 @@ let mapleader = ","
 
 " Set up commands for FuzzyFinder and FuzzyFinderTextMate
 map <leader>t :FuzzyFinderTextMate<CR>
-map <leader>b :FuzzyFinderBuffer<CR>
 map <leader>f :FuzzyFinderFile<CR>
 map <leader>r :FuzzyFinderMruFile<CR>
 map <leader>R :ruby finder.rescan!<CR>:FuzzyFinderRemoveCache<CR>:exe ":echo 'rescan complete'"<CR>
@@ -52,6 +57,9 @@ let g:fuzzy_matching_limit = 70
 
 " Set up command for NERDTree
 map <leader>n :NERDTreeToggle<CR>
+
+" MiniBufExplr
+map <leader>b :MiniBufExplorer<cr>
 
 " Make backspace work the way it should
 set backspace=2
@@ -86,10 +94,8 @@ map <leader>a :Ack<space>
 " Session saving
 set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
 
-" Invisible characters *********************************************************
-set listchars=trail:.,tab:>-,eol:$
-set nolist
-:noremap ,i :set list!<CR> " Toggle invisible chars"
+" Ruby folding
+" au Filetype ruby call <Plug>SimpleFold_Foldsearch
 
 " Omni Completion
 " *************************************************************
