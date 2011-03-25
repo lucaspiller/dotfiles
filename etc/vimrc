@@ -77,6 +77,10 @@ map <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloade
 " Generate a tags file in the current directory using Exuberant ctags
 map <leader>e :silent :! ctags --recurse --sort=yes;sort tags > tmptags;mv tmptags tags<CR>:exe ":echo 'tags generated'"<CR>
 
+filetype off
+
+call pathogen#runtime_append_all_bundles()
+
 filetype plugin indent on
 
 function! AckGrep(command)
