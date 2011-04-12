@@ -30,14 +30,30 @@ syntax on
 set foldmethod=manual
 
 " Turn on line highlighting
-set cursorline " Commented out due to performance penalties
+"set cursorline " Commented out due to performance penalties
 
-" Set backup directory
-set backupdir=~/.vim/tmp
-set directory=~/.vim/tmp
+" Disable backup and swapfile
+set nobackup
+set noswapfile
 
 " Set leader to comma
 let mapleader = ","
+
+" Remap : to ;
+nnoremap ; :
+
+" Jump more naturally between long lines
+nnoremap j gj
+nnoremap k gk
+
+" Easy window navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" Unhighlight search
+nmap <silent> ,/ :nohlsearch<CR>
 
 " Set up commands for FuzzyFinder and FuzzyFinderTextMate
 map <leader>t :FuzzyFinderTextMate<CR>
