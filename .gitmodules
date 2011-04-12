@@ -7,3 +7,6 @@
 [submodule "etc/vim/bundle/vim-colors-solarized"]
 	path = etc/vim/bundle/vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
+[submodule "etc/vim/bundle/lusty"]
+	path = etc/vim/bundle/lusty
+	url = https://github.com/sjbach/lusty

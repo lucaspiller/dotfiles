@@ -29,6 +29,9 @@ set incsearch
 syntax on
 set foldmethod=manual
 
+" Set hidden mode
+set hidden
+
 " Turn on line highlighting
 "set cursorline " Commented out due to performance penalties
 
@@ -55,21 +58,13 @@ map <C-l> <C-w>l
 " Unhighlight search
 nmap <silent> ,/ :nohlsearch<CR>
 
-" Set up commands for FuzzyFinder and FuzzyFinderTextMate
-map <leader>t :FuzzyFinderTextMate<CR>
-map <leader>f :FuzzyFinderFile<CR>
-map <leader>r :FuzzyFinderMruFile<CR>
-map <leader>R :ruby finder.rescan!<CR>:FuzzyFinderRemoveCache<CR>:exe ":echo 'rescan complete'"<CR>
-
-" Fuzzy options
-let g:fuzzy_ignore = "*.log"
-let g:fuzzy_matching_limit = 70
-
 " Set up command for NERDTree
 map <leader>n :NERDTreeToggle<CR>
 
-" MiniBufExplr
-map <leader>b :MiniBufExplorer<cr>
+" Lusty Buffer options
+map <leader>f :LustyFilesystemExplorer<cr>
+map <leader>b :LustyBufferExplorer<cr>
+map <leader>g :LustyBufferGrep<cr>
 
 " Make backspace work the way it should
 set backspace=2
