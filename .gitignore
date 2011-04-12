@@ -4,3 +4,4 @@ etc/vim/.netrwhist
 etc/vim/tmp
 *.swp
 *.swo
+.DS*
