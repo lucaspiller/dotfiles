@@ -63,7 +63,7 @@ map <leader>n :NERDTreeToggle<CR>
 
 " Lusty Buffer options
 map <leader>f :LustyFilesystemExplorer<cr>
-map <leader>b :LustyBufferExplorer<cr>
+map <leader>b :LustyJuggler<cr>
 map <leader>g :LustyBufferGrep<cr>
 
 " Make backspace work the way it should
@@ -122,3 +122,6 @@ autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 " Solarized
 set background=dark
 colorscheme solarized
+
+" Show title
+set title
