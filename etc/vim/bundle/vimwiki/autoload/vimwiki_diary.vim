@@ -208,6 +208,11 @@ function! vimwiki_diary#make_note(index, ...) "{{{
   call vimwiki#open_link(':e ', link, s:diary_index())
 endfunction "}}}
 
+function! vimwiki_diary#goto_index(index) "{{{
+  call vimwiki#select(a:index)
+  call vimwiki#edit_file(':e', s:diary_index())
+endfunction "}}}
+
 " Calendar.vim callback function.
 function! vimwiki_diary#calendar_action(day, month, year, week, dir) "{{{
   let day = s:prefix_zero(a:day)

@@ -34,13 +34,26 @@ function! vimwiki#mkdir(path) "{{{
 endfunction
 " }}}
 
-function! vimwiki#safe_link(string) "{{{
-  return substitute(a:string, s:badsymbols, g:vimwiki_stripsym, 'g')
+function! vimwiki#safe_link(link) "{{{
+  " handling Windows absolute paths
+  if a:link =~ '^[[:alpha:]]:[/\\].*'
+    let link_start = a:link[0 : 2]
+    let link = a:link[3 : ]
+  else
+    let link_start = ''
+    let link = a:link
+  endif
+  let link = substitute(link, s:badsymbols, g:vimwiki_stripsym, 'g')
+  return link_start.link
 endfunction
 "}}}
 
 function! vimwiki#unsafe_link(string) "{{{
-  return substitute(a:string, g:vimwiki_stripsym, s:badsymbols, 'g')
+  if len(g:vimwiki_stripsym) > 0
+    return substitute(a:string, g:vimwiki_stripsym, s:badsymbols, 'g')
+  else
+    return a:string
+  endif
 endfunction
 "}}}
 
@@ -66,7 +79,11 @@ endfunction"}}}
 
 function! vimwiki#open_link(cmd, link, ...) "{{{
   if vimwiki#is_non_wiki_link(a:link)
-    call s:edit_file(a:cmd, a:link)
+    if s:is_path_absolute(a:link)
+      call vimwiki#edit_file(a:cmd, a:link)
+    else
+      call vimwiki#edit_file(a:cmd, VimwikiGet('path').a:link)
+    endif
   else
     if a:0
       let vimwiki_prev_link = [a:1, []]
@@ -76,15 +93,15 @@ function! vimwiki#open_link(cmd, link, ...) "{{{
 
     if vimwiki#is_link_to_dir(a:link)
       if g:vimwiki_dir_link == ''
-        call s:edit_file(a:cmd, VimwikiGet('path').a:link)
+        call vimwiki#edit_file(a:cmd, VimwikiGet('path').a:link)
       else
-        call s:edit_file(a:cmd, 
+        call vimwiki#edit_file(a:cmd, 
               \ VimwikiGet('path').a:link.
               \ g:vimwiki_dir_link.
               \ VimwikiGet('ext'))
       endif
     else
-      call s:edit_file(a:cmd, VimwikiGet('path').a:link.VimwikiGet('ext'))
+      call vimwiki#edit_file(a:cmd, VimwikiGet('path').a:link.VimwikiGet('ext'))
     endif
     
     if exists('vimwiki_prev_link')
@@ -128,7 +145,7 @@ function! vimwiki#generate_links()"{{{
 endfunction " }}}
 
 function! vimwiki#goto(key) "{{{
-    call s:edit_file(':e',
+    call vimwiki#edit_file(':e',
           \ VimwikiGet('path').
           \ a:key.
           \ VimwikiGet('ext'))
@@ -136,6 +153,10 @@ endfunction "}}}
 
 function! s:is_windows() "{{{
   return has("win32") || has("win64") || has("win95") || has("win16")
+endfunction "}}}
+
+function! s:is_path_absolute(path) "{{{
+  return a:path =~ '^/.*' || a:path =~ '^[[:alpha:]]:[/\\].*'
 endfunction "}}}
 
 function! s:get_links(pat) "{{{
@@ -191,10 +212,15 @@ function! s:is_wiki_word(str) "{{{
 endfunction
 " }}}
 
-function! s:edit_file(command, filename) "{{{
+function! vimwiki#edit_file(command, filename) "{{{
   let fname = escape(a:filename, '% ')
   call vimwiki#mkdir(fnamemodify(a:filename, ":p:h"))
-  execute a:command.' '.fname
+  try
+    execute a:command.' '.fname
+  catch /E37/ " catch 'No write since last change' error
+    execute ':split '.fname
+  catch /E325/ " catch 'ATTENTION' error (:h E325)
+  endtry
 endfunction
 " }}}
 
@@ -383,7 +409,7 @@ function! s:get_wiki_buffers() "{{{
 endfunction " }}}
 
 function! s:open_wiki_buffer(item) "{{{
-  call s:edit_file('e', a:item[0])
+  call vimwiki#edit_file(':e', a:item[0])
   if !empty(a:item[1])
     call setbufvar(a:item[0], "vimwiki_prev_link", a:item[1])
   endif
@@ -544,7 +570,7 @@ function! vimwiki#setup_colors() "{{{
   endif
 endfunction "}}}
 
-function vimwiki#get_hl_param(hgroup, hparam) "{{{
+function! vimwiki#get_hl_param(hgroup, hparam) "{{{
   redir => hlstatus
   try
     exe "silent hi ".a:hgroup
@@ -630,6 +656,8 @@ function! vimwiki#follow_link(split) "{{{
     let cmd = ":split "
   elseif a:split == "vsplit"
     let cmd = ":vsplit "
+  elseif a:split == "tabnew"
+    let cmd = ":tabnew "
   else
     let cmd = ":e "
   endif
@@ -661,18 +689,8 @@ endfunction " }}}
 
 function! vimwiki#goto_index(index) "{{{
   call vimwiki#select(a:index)
-  call vimwiki#mkdir(VimwikiGet('path'))
-
-  try
-    execute ':e '.fnameescape(
-          \ VimwikiGet('path').VimwikiGet('index').VimwikiGet('ext'))
-  catch /E37/ " catch 'No write since last change' error
-    execute ':split '.
-          \ VimwikiGet('path').
-          \ VimwikiGet('index').
-          \ VimwikiGet('ext')
-  catch /E325/ " catch 'ATTENTION' error (:h E325)
-  endtry
+  call vimwiki#edit_file('e',
+        \ VimwikiGet('path').VimwikiGet('index').VimwikiGet('ext'))
 endfunction "}}}
 
 function! vimwiki#delete_link() "{{{

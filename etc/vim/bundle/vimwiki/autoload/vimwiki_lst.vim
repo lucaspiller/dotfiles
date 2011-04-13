@@ -328,32 +328,42 @@ endfunction "}}}
 function! vimwiki_lst#kbd_oO(cmd) "{{{
   " cmd should be 'o' or 'O'
 
-  let beg_lnum = foldclosed('.')
-  let end_lnum = foldclosedend('.')
-  if end_lnum != -1 && a:cmd ==# 'o'
-    let lnum = end_lnum
-    let line = getline(beg_lnum)
-  else
-    let line = getline('.')
-    let lnum = line('.')
-  endif
+  let l:count = v:count1
+  while l:count > 0
 
-    " let line = substitute(m, '\s*$', ' ', '').'[ ] '.li_content
-  let m = matchstr(line, s:rx_list_item())
-  let res = ''
-  if line =~ s:rx_cb_list_item()
-    let res = substitute(m, '\s*$', ' ', '').'[ ] '
-  elseif line =~ s:rx_list_item()
-    let res = substitute(m, '\s*$', ' ', '')
-  elseif &autoindent || &smartindent
-    let res = matchstr(line, '^\s*')
-  endif
-  if a:cmd ==# 'o'
-    call append(lnum, res)
-    call cursor(lnum + 1, col('$'))
-  else
-    call append(lnum - 1, res)
-    call cursor(lnum, col('$'))
-  endif
+    let beg_lnum = foldclosed('.')
+    let end_lnum = foldclosedend('.')
+    if end_lnum != -1 && a:cmd ==# 'o'
+      let lnum = end_lnum
+      let line = getline(beg_lnum)
+    else
+      let line = getline('.')
+      let lnum = line('.')
+    endif
+
+      " let line = substitute(m, '\s*$', ' ', '').'[ ] '.li_content
+    let m = matchstr(line, s:rx_list_item())
+    let res = ''
+    if line =~ s:rx_cb_list_item()
+      let res = substitute(m, '\s*$', ' ', '').'[ ] '
+    elseif line =~ s:rx_list_item()
+      let res = substitute(m, '\s*$', ' ', '')
+    elseif &autoindent || &smartindent
+      let res = matchstr(line, '^\s*')
+    endif
+
+    if a:cmd ==# 'o'
+      call append(lnum, res)
+      call cursor(lnum + 1, col('$'))
+    else
+      call append(lnum - 1, res)
+      call cursor(lnum, col('$'))
+    endif
+
+    let l:count -= 1
+  endwhile
+
+  startinsert!
+
 endfunction "}}}
 

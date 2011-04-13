@@ -53,6 +53,19 @@ function! s:setup_buffer_leave()"{{{
   endif
 endfunction"}}}
 
+function! s:setup_filetype() "{{{
+    " Find what wiki current buffer belongs to.
+    let path = expand('%:p:h')
+    let ext = '.'.expand('%:e')
+    let idx = s:find_wiki(path)
+
+    if idx == -1 && g:vimwiki_global_ext == 0
+      return
+    endif
+
+  set filetype=vimwiki
+endfunction "}}}
+
 function! s:setup_buffer_enter() "{{{
   if exists("b:vimwiki_idx")
     let g:vimwiki_current_idx = b:vimwiki_idx
@@ -80,6 +93,11 @@ function! s:setup_buffer_enter() "{{{
 
     let b:vimwiki_idx = g:vimwiki_current_idx
   endif
+
+  " If you have
+  "     au GUIEnter * VimwikiIndex
+  " in your vimrc the next line is essential.
+  setf vimwiki
 
   " Update existed/non-existed links highlighting.
   call vimwiki#highlight_links()
@@ -154,18 +172,18 @@ endfunction "}}}
 " CALLBACK function "{{{
 " User can redefine it.
 if !exists("*VimwikiWeblinkHandler") "{{{
-  function VimwikiWeblinkHandler(weblink) 
+  function VimwikiWeblinkHandler(weblink)
     for browser in g:vimwiki_browsers
       if executable(browser)
         if has("win32")
-          execute '!start "'.browser.'" ' . a:weblink
+          execute '!start "'.browser.'" "' . a:weblink . '"'
         else
-          execute '!'.browser.' ' . a:weblink
+          execute '!'.browser.' "' . a:weblink . '"'
         endif
         return
       endif
     endfor
-  endfunction 
+  endfunction
 endif "}}}
 " CALLBACK }}}
 
@@ -178,8 +196,11 @@ let s:vimwiki_defaults.index = 'index'
 let s:vimwiki_defaults.ext = '.wiki'
 let s:vimwiki_defaults.maxhi = 1
 let s:vimwiki_defaults.syntax = 'default'
-let s:vimwiki_defaults.html_header = ''
-let s:vimwiki_defaults.html_footer = ''
+
+let s:vimwiki_defaults.template_path = '~/vimwiki/templates/'
+let s:vimwiki_defaults.template_default = 'default'
+let s:vimwiki_defaults.template_ext = '.html'
+
 let s:vimwiki_defaults.nested_syntaxes = {}
 let s:vimwiki_defaults.auto_export = 0
 " is wiki temporary -- was added to g:vimwiki_list by opening arbitrary wiki
@@ -223,7 +244,7 @@ call s:default('camel_case', 1)
 call s:default('list_ignore_newline', 1)
 call s:default('listsyms', ' .oOX')
 if has("win32")
-  call s:default('browsers', 
+  call s:default('browsers',
         \ [
         \  expand('~').'\Local Settings\Application Data\Google\Chrome\Application\chrome.exe',
         \  'C:\Program Files\Opera\opera.exe',
@@ -231,7 +252,7 @@ if has("win32")
         \  'C:\Program Files\Internet Explorer\iexplore.exe',
         \ ])
 else
-  call s:default('browsers', 
+  call s:default('browsers',
         \ [
         \  'opera',
         \  'firefox',
@@ -245,7 +266,8 @@ call s:default('w32_dir_enc', '')
 call s:default('CJK_length', 0)
 call s:default('dir_link', '')
 call s:default('file_exts', 'pdf,txt,doc,rtf,xls,php,zip,rar,7z,html,gz')
-call s:default('valid_html_tags', 'b,i,s,u,sub,sup,kbd,br,hr')
+call s:default('valid_html_tags', 'b,i,s,u,sub,sup,kbd,br,hr,div,center,strong,em')
+call s:default('user_htmls', '')
 
 call s:default('html_header_numbering', 0)
 call s:default('html_header_numbering_sym', '')
@@ -273,8 +295,14 @@ else
   let g:vimwiki_rxWikiLink = g:vimwiki_rxWikiLink1.'\|'.g:vimwiki_rxWikiLink2
 endif
 let g:vimwiki_rxWeblink = '\%("[^"(]\+\((\([^)]\+\))\)\?":\)\?'.
-      \'\%(https\?\|ftp\|gopher\|telnet\|file\|notes\|ms-help\):'.
-      \'\%(\%(\%(//\)\|\%(\\\\\)\)\+[A-Za-z0-9:#@%/;,$~()_?+=.&\\\-]*\)'.
+      \'\%('.
+        \'\%('.
+          \'\%(https\?\|ftp\|gopher\|telnet\|file\|notes\|ms-help\):'.
+          \'\%(\%(//\)\|\%(\\\\\)\)'.
+        \'\)'.
+        \'\|\%(mailto:\)'.
+      \'\)'.
+      \'\+[A-Za-z0-9:#@%/;,$~()_?+=.&\\\-]*'.
       \'[().,?]\@<!'
 "}}}
 
@@ -297,9 +325,9 @@ augroup end
 augroup vimwiki
   autocmd!
   for ext in keys(extensions)
-    exe 'autocmd BufEnter *'.ext.' call s:setup_buffer_enter()'
+    exe 'autocmd BufWinEnter *'.ext.' call s:setup_buffer_enter()'
     exe 'autocmd BufLeave,BufHidden *'.ext.' call s:setup_buffer_leave()'
-    exe 'autocmd BufNewFile,BufRead, *'.ext.' setlocal filetype=vimwiki'
+    exe 'autocmd BufNewFile,BufRead, *'.ext.' call s:setup_filetype()'
 
     " ColorScheme could have or could have not a
     " VimwikiHeader1..VimwikiHeader6 highlight groups. We need to refresh
@@ -324,6 +352,8 @@ command! -count VimwikiIndex
 command! -count VimwikiTabIndex tabedit <bar>
       \ call vimwiki#goto_index(v:count1)
 
+command! -count VimwikiDiaryIndex
+      \ call vimwiki_diary#goto_index(v:count1)
 command! -count VimwikiMakeDiaryNote
       \ call vimwiki_diary#make_note(v:count1)
 command! -count VimwikiTabMakeDiaryNote tabedit <bar>
@@ -332,29 +362,34 @@ command! -count VimwikiTabMakeDiaryNote tabedit <bar>
 
 " MAPPINGS {{{
 if !hasmapto('<Plug>VimwikiIndex')
-  map <silent><unique> <Leader>ww <Plug>VimwikiIndex
+  nmap <silent><unique> <Leader>ww <Plug>VimwikiIndex
 endif
-noremap <unique><script> <Plug>VimwikiIndex :VimwikiIndex<CR>
+nnoremap <unique><script> <Plug>VimwikiIndex :VimwikiIndex<CR>
 
 if !hasmapto('<Plug>VimwikiTabIndex')
-  map <silent><unique> <Leader>wt <Plug>VimwikiTabIndex
+  nmap <silent><unique> <Leader>wt <Plug>VimwikiTabIndex
 endif
-noremap <unique><script> <Plug>VimwikiTabIndex :VimwikiTabIndex<CR>
+nnoremap <unique><script> <Plug>VimwikiTabIndex :VimwikiTabIndex<CR>
 
 if !hasmapto('<Plug>VimwikiUISelect')
-  map <silent><unique> <Leader>ws <Plug>VimwikiUISelect
+  nmap <silent><unique> <Leader>ws <Plug>VimwikiUISelect
 endif
-noremap <unique><script> <Plug>VimwikiUISelect :VimwikiUISelect<CR>
+nnoremap <unique><script> <Plug>VimwikiUISelect :VimwikiUISelect<CR>
+
+if !hasmapto('<Plug>VimwikiDiaryIndex')
+  nmap <silent><unique> <Leader>wi <Plug>VimwikiDiaryIndex
+endif
+nnoremap <unique><script> <Plug>VimwikiDiaryIndex :VimwikiDiaryIndex<CR>
 
 if !hasmapto('<Plug>VimwikiMakeDiaryNote')
-  map <silent><unique> <Leader>w<Leader>w <Plug>VimwikiMakeDiaryNote
+  nmap <silent><unique> <Leader>w<Leader>w <Plug>VimwikiMakeDiaryNote
 endif
-noremap <unique><script> <Plug>VimwikiMakeDiaryNote :VimwikiMakeDiaryNote<CR>
+nnoremap <unique><script> <Plug>VimwikiMakeDiaryNote :VimwikiMakeDiaryNote<CR>
 
 if !hasmapto('<Plug>VimwikiTabMakeDiaryNote')
-  map <silent><unique> <Leader>w<Leader>t <Plug>VimwikiTabMakeDiaryNote
+  nmap <silent><unique> <Leader>w<Leader>t <Plug>VimwikiTabMakeDiaryNote
 endif
-noremap <unique><script> <Plug>VimwikiTabMakeDiaryNote
+nnoremap <unique><script> <Plug>VimwikiTabMakeDiaryNote
       \ :VimwikiTabMakeDiaryNote<CR>
 
 "}}}

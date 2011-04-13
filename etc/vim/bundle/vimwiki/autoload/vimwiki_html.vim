@@ -13,12 +13,6 @@ endif
 let g:loaded_vimwiki_html_auto = 1
 "}}}
 
-" SCRIPT VARS "{{{
-" Warn if html header or html footer do not exist only once.
-let s:warn_html_header = 0
-let s:warn_html_footer = 0
-"}}}
-
 " UTILITY "{{{
 function! s:root_path(subdir) "{{{
   return repeat('../', len(split(a:subdir, '[/\\]')))
@@ -35,7 +29,7 @@ function! s:remove_blank_lines(lines) " {{{
 endfunction "}}}
 
 function! s:is_web_link(lnk) "{{{
-  if a:lnk =~ '^\%(https://\|http://\|www.\|ftp://\|file://\)'
+  if a:lnk =~ '^\%(https://\|http://\|www.\|ftp://\|file://\|mailto:\)'
     return 1
   endif
   return 0
@@ -62,14 +56,14 @@ function! s:create_default_CSS(path) " {{{
     call vimwiki#mkdir(fnamemodify(css_full_name, ':p:h'))
     let lines = []
 
-    call add(lines, 'body {font-family: Tahoma, sans-serif; margin: 1em 2em 1em 2em; font-size: 100%; line-height: 130%;}')
-    call add(lines, 'h1, h2, h3, h4, h5, h6 {font-family: Trebuchet MS, serif; margin-top: 1.5em; margin-bottom: 0.5em;}')
-    call add(lines, 'h1 {font-size: 2.0em; color: #a77070;}')
-    call add(lines, 'h2 {font-size: 1.6em; color: #779977;}')
-    call add(lines, 'h3 {font-size: 1.3em; color: #555577;}')
-    call add(lines, 'h4 {font-size: 1.2em; color: #222244;}')
-    call add(lines, 'h5 {font-size: 1.1em; color: #222244;}')
-    call add(lines, 'h6 {font-size: 1.0em; color: #222244;}')
+    call add(lines, 'body {font-family: Tahoma, Geneva, sans-serif; margin: 1em 2em 1em 2em; font-size: 100%; line-height: 130%;}')
+    call add(lines, 'h1, h2, h3, h4, h5, h6 {font-family: Trebuchet MS, Helvetica, sans-serif; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; color: MediumOrchid;}')
+    call add(lines, 'h1 {font-size: 2.1em; color: Fuchsia;}')
+    call add(lines, 'h2 {font-size: 1.8em; color: Fuchsia;}')
+    call add(lines, 'h3 {font-size: 1.6em; color: MediumVioletRed;}')
+    call add(lines, 'h4 {font-size: 1.4em; color: MediumVioletRed;}')
+    call add(lines, 'h5 {font-size: 1.2em; color: DarkMagenta;}')
+    call add(lines, 'h6 {font-size: 1.1em; color: DarkMagenta;}')
     call add(lines, 'p, pre, blockquote, table, ul, ol, dl {margin-top: 1em; margin-bottom: 1em;}')
     call add(lines, 'ul ul, ul ol, ol ol, ol ul {margin-top: 0.5em; margin-bottom: 0.5em;}')
     call add(lines, 'li {margin: 0.3em auto;}')
@@ -88,25 +82,53 @@ function! s:create_default_CSS(path) " {{{
     call add(lines, '.justright {text-align: right;}')
     call add(lines, '.justcenter {text-align: center;}')
     call add(lines, '.center {margin-left: auto; margin-right: auto;}')
+    call add(lines, '/* classes for items of todo lists */')
+    call add(lines, '.done0:before {content: "\2592\2592\2592\2592"; color: SkyBlue;}')
+    call add(lines, '.done1:before {content: "\2588\2592\2592\2592"; color: SkyBlue;}')
+    call add(lines, '.done2:before {content: "\2588\2588\2592\2592"; color: SkyBlue;}')
+    call add(lines, '.done3:before {content: "\2588\2588\2588\2592"; color: SkyBlue;}')
+    call add(lines, '.done4:before {content: "\2588\2588\2588\2588"; color: SkyBlue;}')
+    call add(lines, '/* comment the next four or five lines out   *')
+    call add(lines, ' * if you do not want color-coded todo lists */ ')
+    call add(lines, '.done0 {color: #c00000;}')
+    call add(lines, '.done1 {color: #c08000;}')
+    call add(lines, '.done2 {color: #80a000;}')
+    call add(lines, '.done3 {color: #00c000;}')
+    call add(lines, '.done4 {color: #7f7f7f; text-decoration: line-through;}')
 
     call writefile(lines, css_full_name)
-    echomsg "Default style.css is created."
+    echomsg "Default style.css has been created."
   endif
 endfunction "}}}
 
-function! s:get_html_header(title, subdir, charset) "{{{
+function! s:template_full_name(name) "{{{
+  if a:name == ''
+    let name = VimwikiGet('template_default')
+  else
+    let name = a:name
+  endif
+
+  let fname = expand(VimwikiGet('template_path').
+        \name.
+        \VimwikiGet('template_ext'))
+
+  if filereadable(fname)
+    return fname
+  else
+    return ''
+  endif
+endfunction "}}}
+
+function! s:get_html_template(subdir, wikifile, template) "{{{
   let lines=[]
 
-  if VimwikiGet('html_header') != "" && !s:warn_html_header
+  let template_name = s:template_full_name(a:template)
+  if template_name != ''
     try
-      let lines = readfile(expand(VimwikiGet('html_header')))
-      call map(lines, 'substitute(v:val, "%title%", "'. a:title .'", "g")')
-      call map(lines, 'substitute(v:val, "%root_path%", "'.
-            \ s:root_path(a:subdir) .'", "g")')
+      let lines = readfile(template_name)
       return lines
     catch /E484/
-      let s:warn_html_header = 1
-      echomsg 'vimwiki: Header template '.VimwikiGet('html_header').
+      echomsg 'vimwiki: html template '.template_name.
             \ ' does not exist!'
     endtry
   endif
@@ -118,41 +140,26 @@ function! s:get_html_header(title, subdir, charset) "{{{
     let css_name = s:root_path(a:subdir).css_name
   endif
 
-  " if no VimwikiGet('html_header') set up or error while reading template
-  " file -- use default header.
+  let enc = &fileencoding
+  if enc == ''
+    let enc = &encoding
+  endif
+
+  " if no VimwikiGet('html_template') set up or error while reading template
+  " file -- use default one.
+  call add(lines, '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">')
   call add(lines, '<html>')
   call add(lines, '<head>')
   call add(lines, '<link rel="Stylesheet" type="text/css" href="'.
-        \ css_name.'" />')
-  call add(lines, '<title>'.a:title.'</title>')
+        \ css_name.'">')
+  call add(lines, '<title>%title%</title>')
   call add(lines, '<meta http-equiv="Content-Type" content="text/html;'.
-        \ ' charset='.a:charset.'" />')
+        \ ' charset='.&enc.'">')
   call add(lines, '</head>')
   call add(lines, '<body>')
-
-  return lines
-endfunction "}}}
-
-function! s:get_html_footer() "{{{
-  let lines=[]
-
-  if VimwikiGet('html_footer') != "" && !s:warn_html_footer
-    try
-      let lines = readfile(expand(VimwikiGet('html_footer')))
-      return lines
-    catch /E484/
-      let s:warn_html_footer = 1
-      echomsg 'vimwiki: Footer template '.VimwikiGet('html_footer').
-            \ ' does not exist!'
-    endtry
-  endif
-
-  " if no VimwikiGet('html_footer') set up or error while reading template
-  " file -- use default footer.
-  call add(lines, "")
+  call add(lines, '%content%')
   call add(lines, '</body>')
   call add(lines, '</html>')
-
   return lines
 endfunction "}}}
 
@@ -174,6 +181,19 @@ endfunction "}}}
 function! s:delete_html_files(path) "{{{
   let htmlfiles = split(glob(a:path.'**/*.html'), '\n')
   for fname in htmlfiles
+    " ignore user html files, e.g. search.html,404.html
+    if stridx(g:vimwiki_user_htmls, fnamemodify(fname, ":t")) >= 0
+      continue
+    endif
+
+    " delete if there is no corresponding wiki file
+    let subdir = vimwiki#subdir(VimwikiGet('path_html'), fname)
+    let wikifile = VimwikiGet("path").subdir.
+          \fnamemodify(fname, ":t:r").VimwikiGet("ext")
+    if filereadable(wikifile)
+      continue
+    endif
+
     try
       call delete(fname)
     catch
@@ -183,40 +203,148 @@ function! s:delete_html_files(path) "{{{
 endfunction "}}}
 
 function! s:remove_comments(lines) "{{{
+
+  " Kind of a Finite State Machine
+  function! s:strip_comment(line, state) "{{{
+    let state = a:state
+    let line = ''
+    let bufline = ''
+    let idx = 0
+    while idx < len(a:line)
+      if state == 'normal'
+        if a:line[idx] == '<'
+          let state = '<'
+        elseif a:line[idx] == '{'
+          let state = '{'
+        elseif a:line[idx] == '`'
+          let state = 'code'
+        endif
+        let bufline .= a:line[idx]
+      elseif state == '<'
+        if a:line[idx] == '!'
+          let state = '<!'
+        elseif a:line[idx] == '{'
+          let state = '{'
+        elseif a:line[idx] == '`'
+          let state = 'code'
+        else
+          let state = 'normal'
+        endif
+        let bufline .= a:line[idx]
+      elseif state == '<!'
+        if a:line[idx] == '-'
+          let state = '<!-'
+        elseif a:line[idx] == '{'
+          let state = '{'
+        elseif a:line[idx] == '`'
+          let state = 'code'
+        else
+          let state = 'normal'
+        endif
+        let bufline .= a:line[idx]
+      elseif state == '<!-'
+        if a:line[idx] == '-'
+          let state = 'comment'
+          let bufline = ''
+        elseif a:line[idx] == '{'
+          let state = '{'
+          let bufline .= a:line[idx]
+        elseif a:line[idx] == '`'
+          let state = 'code'
+          let bufline .= a:line[idx]
+        else
+          let state = 'normal'
+          let bufline .= a:line[idx]
+        endif
+      elseif state == '{'
+        if a:line[idx] == '{'
+          let state = '{{'
+        elseif a:line[idx] == '<'
+          let state = '<'
+        elseif a:line[idx] == '`'
+          let state = 'code'
+        else
+          let state = 'normal'
+        endif
+        let bufline .= a:line[idx]
+      elseif state == '{{'
+        if a:line[idx] == '{'
+          let state = 'pre'
+        elseif a:line[idx] == '<'
+          let state = '<'
+        elseif a:line[idx] == '`'
+          let state = 'code'
+        else
+          let state = 'normal'
+        endif
+        let bufline .= a:line[idx]
+      elseif state == 'comment'
+        if a:line[idx] == '-'
+          let state = '-'
+        endif
+      elseif state == '-'
+        if a:line[idx] == '-'
+          let state = '--'
+        else
+          let state = 'comment'
+        endif
+      elseif state == '--'
+        if a:line[idx] == '>'
+          let state = 'normal'
+          let bufline = ''
+        else
+          let state = 'comment'
+        endif
+      elseif state == 'pre'
+        if a:line[idx] == '}'
+          let state = '}'
+        endif
+        let bufline .= a:line[idx]
+      elseif state == '}'
+        if a:line[idx] == '}'
+          let state = '}}'
+        else
+          let state = 'pre'
+        endif
+        let bufline .= a:line[idx]
+      elseif state == '}}'
+        if a:line[idx] == '}'
+          let state = 'normal'
+        else
+          let state = 'pre'
+        endif
+        let bufline .= a:line[idx]
+      elseif state == 'code'
+        if a:line[idx] == '`'
+          let state = 'normal'
+        endif
+        let bufline .= a:line[idx]
+      endif
+
+      if state == 'normal' || state == 'pre' || state == 'code'
+        let line = line . bufline
+        let bufline = ''
+      endif
+
+      let idx += 1
+    endwhile
+    return [line, state]
+  endfunction "}}}
+
   let res = []
-  let multiline_comment = 0
+  let state = 'normal'
 
   let idx = 0
   while idx < len(a:lines)
     let line = a:lines[idx]
     let idx += 1
 
-    if multiline_comment
-      let col = matchend(line, '-->',)
-      if col != -1
-        let multiline_comment = 0
-        let line = strpart(line, col)
-      else
-        continue
-      endif
+    let [strip_line, state] = s:strip_comment(line, state)
+    if !len(strip_line) && len(line)
+      continue
     endif
 
-    if !multiline_comment && line =~ '<!--.*-->'
-      let line = substitute(line, '<!--.*-->', '', 'g')
-      if line =~ '^\s*$'
-        continue
-      endif
-    endif
-
-    if !multiline_comment
-      let col = match(line, '<!--',)
-      if col != -1
-        let multiline_comment = 1
-        let line = strpart(line, 1, col - 1)
-      endif
-    endif
-
-    call add(res, line)
+    call add(res, strip_line)
   endwhile
   return res
 endfunction "}}}
@@ -283,7 +411,7 @@ function! s:get_html_toc(toc_list) "{{{
 
     let toc_text = s:process_tags_remove_links(text)
     let toc_text = s:process_tags_typefaces(toc_text)
-    call add(toc, '<li><a href="#'.id.'">'.toc_text.'</a></li>')
+    call add(toc, '<li><a href="#'.id.'">'.toc_text.'</a>')
     let plevel = level
   endfor
   call s:close_list(toc, level, 0)
@@ -293,6 +421,7 @@ endfunction "}}}
 
 " insert toc into dest.
 function! s:process_toc(dest, placeholders, toc) "{{{
+  let toc_idx = 0
   if !empty(a:placeholders)
     for [placeholder, row, idx] in a:placeholders
       let [type, param] = placeholder
@@ -301,8 +430,9 @@ function! s:process_toc(dest, placeholders, toc) "{{{
         if !empty(param)
           call insert(toc, '<h1>'.param.'</h1>')
         endif
-        let shift = idx * len(toc)
+        let shift = toc_idx * len(toc)
         call extend(a:dest, toc, row + shift)
+        let toc_idx += 1
       endif
     endfor
   endif
@@ -321,6 +451,46 @@ function! s:process_title(placeholders, default_title) "{{{
   return a:default_title
 endfunction "}}}
 
+function! s:is_html_uptodate(wikifile) "{{{
+  let tpl_time = -1
+
+  let tpl_file = s:template_full_name('')
+  if tpl_file != ''
+    let tpl_time = getftime(tpl_file)
+  endif
+
+  let wikifile = fnamemodify(a:wikifile, ":p")
+  let subdir = vimwiki#subdir(VimwikiGet('path'), wikifile)
+  let htmlfile = expand(VimwikiGet('path_html').subdir.
+        \fnamemodify(wikifile, ":t:r").".html")
+
+  if getftime(wikifile) <= getftime(htmlfile) && tpl_time <= getftime(htmlfile)
+    return 1
+  endif
+  return 0
+endfunction "}}}
+
+function! s:html_insert_contents(html_lines, content) "{{{
+  let lines = []
+  for line in a:html_lines
+    if line =~ '%content%'
+      let parts = split(line, '%content%', 1)
+      if empty(parts)
+        call extend(lines, a:content)
+      else
+        for idx in range(len(parts))
+          call add(lines, parts[idx])
+          if idx < len(parts) - 1
+            call extend(lines, a:content)
+          endif
+        endfor
+      endif
+    else
+      call add(lines, line)
+    endif
+  endfor
+  return lines
+endfunction "}}}
 "}}}
 
 " INLINE TAGS "{{{
@@ -741,11 +911,15 @@ function! s:process_tag_list(line, lists) "{{{
 
     let chk = matchlist(a:line, a:rx_list)
     if len(chk) > 0
-      if chk[1] == g:vimwiki_listsyms[4]
-        let st_tag .= '<del><input type="checkbox" checked />'
-        let en_tag = '</del>'.a:en_tag
-      else
-        let st_tag .= '<input type="checkbox" />'
+      if len(chk[1])>0
+        "wildcard characters are difficult to match correctly
+        if chk[1] =~ '[.*\\^$~]'
+          let chk[1] ='\'.chk[1]
+        endif
+        let completion = match(g:vimwiki_listsyms, chk[1])
+        if completion >= 0 && completion <=4 
+          let st_tag = '<li class="done'.completion.'">'
+        endif
       endif
     endif
     return [st_tag, en_tag]
@@ -790,7 +964,7 @@ function! s:process_tag_list(line, lists) "{{{
 
     let checkbox = '\s*\[\(.\?\)\]\s*'
     let [st_tag, en_tag] = s:add_checkbox(line,
-          \ lstRegExp.checkbox, '<li>', '</li>')
+          \ lstRegExp.checkbox, '<li>', '')
 
     if !in_list
       call add(a:lists, [lstTagClose, indent])
@@ -1027,6 +1201,16 @@ function! s:parse_line(line, state) " {{{
     endif
   endif
 
+  " html template -- placeholder "{{{
+  if !processed
+    if line =~ '^\s*%template'
+      let processed = 1
+      let param = matchstr(line, '^\s*%template\s\zs.*')
+      let state.placeholder = ['template', param]
+    endif
+  endif
+  "}}}
+
   " toc -- placeholder "{{{
   if !processed
     if line =~ '^\s*%toc'
@@ -1191,6 +1375,8 @@ endfunction " }}}
 
 function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
 
+  let starttime = reltime()  " start the clock
+  echo 'Generating HTML ... '
   if !s:syntax_supported()
     echomsg 'vimwiki: Only vimwiki_default syntax supported!!!'
     return
@@ -1207,6 +1393,9 @@ function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
 
   " nohtml placeholder -- to skip html generation.
   let nohtml = 0
+
+  " template placeholder
+  let template_name = ''
 
   " for table of contents placeholders.
   let placeholders = []
@@ -1238,40 +1427,57 @@ function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
       if state.placeholder[0] == 'nohtml'
         let nohtml = 1
         break
+      elseif state.placeholder[0] == 'template'
+        let template_name = state.placeholder[1]
       else
         call add(placeholders, [state.placeholder, len(ldest), len(placeholders)])
-        let state.placeholder = []
       endif
+      let state.placeholder = []
     endif
 
     call extend(ldest, lines)
   endfor
 
 
-  if !nohtml
-    let toc = s:get_html_toc(state.toc)
-    call s:process_toc(ldest, placeholders, toc)
-    call s:remove_blank_lines(ldest)
-
-    "" process end of file
-    "" close opened tags if any
-    let lines = []
-    call s:close_tag_quote(state.quote, lines)
-    call s:close_tag_para(state.para, lines)
-    call s:close_tag_pre(state.pre, lines)
-    call s:close_tag_list(state.lists, lines)
-    call s:close_tag_def_list(state.deflist, lines)
-    call s:close_tag_table(state.table, lines)
-    call extend(ldest, lines)
-
-    let title = s:process_title(placeholders, fnamemodify(a:wikifile, ":t:r"))
-    call extend(ldest, s:get_html_header(title, subdir, &fileencoding), 0)
-    call extend(ldest, s:get_html_footer())
-
-    "" make html file.
-    let wwFileNameOnly = fnamemodify(wikifile, ":t:r")
-    call writefile(ldest, path.wwFileNameOnly.'.html')
+  if nohtml
+    echon "\r"."%nohtml placeholder found"
+    return
   endif
+
+  let toc = s:get_html_toc(state.toc)
+  call s:process_toc(ldest, placeholders, toc)
+  call s:remove_blank_lines(ldest)
+
+  "" process end of file
+  "" close opened tags if any
+  let lines = []
+  call s:close_tag_quote(state.quote, lines)
+  call s:close_tag_para(state.para, lines)
+  call s:close_tag_pre(state.pre, lines)
+  call s:close_tag_list(state.lists, lines)
+  call s:close_tag_def_list(state.deflist, lines)
+  call s:close_tag_table(state.table, lines)
+  call extend(ldest, lines)
+
+  let title = s:process_title(placeholders, fnamemodify(a:wikifile, ":t:r"))
+
+  let html_lines = s:get_html_template(subdir, a:wikifile, template_name)
+
+  " processing template variables (refactor to a function)
+  call map(html_lines, 'substitute(v:val, "%title%", "'. title .'", "g")')
+  call map(html_lines, 'substitute(v:val, "%root_path%", "'.
+        \ s:root_path(subdir) .'", "g")')
+  let html_lines = s:html_insert_contents(html_lines, ldest) " %contents%
+  
+  
+
+  "" make html file.
+  let wwFileNameOnly = fnamemodify(wikifile, ":t:r")
+  call writefile(html_lines, path.wwFileNameOnly.'.html')
+
+  " measure the elapsed time and cut away miliseconds and smaller
+  let elapsedtimestr = matchstr(reltimestr(reltime(starttime)),'\d\+\(\.\d\d\)\=')
+  echon "\r".wwFileNameOnly.'.html written (time: '.elapsedtimestr.'s)'
 endfunction "}}}
 
 function! vimwiki_html#WikiAll2HTML(path) "{{{
@@ -1291,7 +1497,7 @@ function! vimwiki_html#WikiAll2HTML(path) "{{{
   let path = expand(a:path)
   call vimwiki#mkdir(path)
 
-  echomsg 'Deleting old html files...'
+  echomsg 'Deleting non-wiki html files...'
   call s:delete_html_files(path)
 
   echomsg 'Converting wiki to html files...'
@@ -1300,8 +1506,12 @@ function! vimwiki_html#WikiAll2HTML(path) "{{{
 
   let wikifiles = split(glob(VimwikiGet('path').'**/*'.VimwikiGet('ext')), '\n')
   for wikifile in wikifiles
-    echomsg 'Processing '.wikifile
-    call vimwiki_html#Wiki2HTML(path, wikifile)
+    if !s:is_html_uptodate(wikifile)
+      echomsg 'Processing '.wikifile
+      call vimwiki_html#Wiki2HTML(path, wikifile)
+    else
+      echomsg 'Skipping '.wikifile
+    endif
   endfor
   call s:create_default_CSS(path)
   echomsg 'Done!'
