@@ -29,37 +29,42 @@ set incsearch
 syntax on
 set foldmethod=manual
 
+" Set hidden mode
+set hidden
+
 " Turn on line highlighting
-set cursorline " Commented out due to performance penalties
+"set cursorline " Commented out due to performance penalties
 
-" Set colorscheme
-if has("gui_running")
-	colorscheme wombat
-	set guifont=Anonymous:h12
-endif 
-
-" Set backup directory
-set backupdir=~/.vim/tmp
-set directory=~/.vim/tmp
+" Disable backup and swapfile
+set nobackup
+set noswapfile
 
 " Set leader to comma
 let mapleader = ","
 
-" Set up commands for FuzzyFinder and FuzzyFinderTextMate
-map <leader>t :FuzzyFinderTextMate<CR>
-map <leader>f :FuzzyFinderFile<CR>
-map <leader>r :FuzzyFinderMruFile<CR>
-map <leader>R :ruby finder.rescan!<CR>:FuzzyFinderRemoveCache<CR>:exe ":echo 'rescan complete'"<CR>
+" Remap : to ;
+nnoremap ; :
 
-" Fuzzy options
-let g:fuzzy_ignore = "*.log"
-let g:fuzzy_matching_limit = 70
+" Jump more naturally between long lines
+nnoremap j gj
+nnoremap k gk
+
+" Easy window navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" Unhighlight search
+nmap <silent> ,/ :nohlsearch<CR>
 
 " Set up command for NERDTree
 map <leader>n :NERDTreeToggle<CR>
 
-" MiniBufExplr
-map <leader>b :MiniBufExplorer<cr>
+" Lusty Buffer options
+map <leader>f :LustyFilesystemExplorer<cr>
+map <leader>b :LustyBufferExplorer<cr>
+map <leader>g :LustyBufferGrep<cr>
 
 " Make backspace work the way it should
 set backspace=2
@@ -76,6 +81,11 @@ map <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloade
 
 " Generate a tags file in the current directory using Exuberant ctags
 map <leader>e :silent :! ctags --recurse --sort=yes;sort tags > tmptags;mv tmptags tags<CR>:exe ":echo 'tags generated'"<CR>
+
+filetype off
+
+call pathogen#runtime_append_all_bundles()
+let coffee_compile_on_save = 1
 
 filetype plugin indent on
 
@@ -108,3 +118,7 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c set omnifunc=ccomplete#Complete
 " May require ruby compiled in
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete 
+
+" Solarized
+set background=dark
+colorscheme solarized
