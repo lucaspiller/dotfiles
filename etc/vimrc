@@ -38,6 +38,7 @@ set hidden
 " Disable backup and swapfile
 set nobackup
 set noswapfile
+set nowritebackup
 
 " Set leader to comma
 let mapleader = ","
