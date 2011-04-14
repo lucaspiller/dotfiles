@@ -10,3 +10,6 @@
 [submodule "etc/vim/bundle/lusty"]
 	path = etc/vim/bundle/lusty
 	url = https://github.com/sjbach/lusty
+[submodule "etc/vim/bundle/vimerl"]
+	path = etc/vim/bundle/vimerl
+	url = https://github.com/oscarh/vimerl.git
