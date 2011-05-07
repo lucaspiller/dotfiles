@@ -1,0 +1,2 @@
+code:load_abs(os:getenv("HOME") ++ "/.ebin/reloader").
+reloader:start().
