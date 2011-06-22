@@ -40,6 +40,9 @@ set nobackup
 set noswapfile
 set nowritebackup
 
+" Tab completion in command line
+set wildmode=longest,list
+
 " Set leader to comma
 let mapleader = ","
 
