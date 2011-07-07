@@ -90,6 +90,8 @@ map <leader>Z :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloade
 map <leader>v "*p<CR>:exe ":echo 'pasted from clipboard'"<CR>
 map <leader>c "*y<CR>:exe ":echo 'copied to clipboard'"<CR>
 
+map <leader>B :BufOnly<CR>
+
 " Generate a tags file in the current directory using Exuberant ctags
 map <leader>e :silent :! ctags --recurse --sort=yes;sort tags > tmptags;mv tmptags tags<CR>:exe ":echo 'tags generated'"<CR>
 
