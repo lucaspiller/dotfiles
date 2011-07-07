@@ -83,8 +83,12 @@ set whichwrap+=<,>,h,l
 set ignorecase
 
 " Make editing .vimrc easier
-map <leader>v :sp ~/.vimrc<CR>
-map <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+map <leader>z :sp ~/.vimrc<CR>
+map <leader>Z :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+
+" Copy and paste
+map <leader>v "*p<CR>:exe ":echo 'pasted from clipboard'"<CR>
+map <leader>c "*y<CR>:exe ":echo 'copied to clipboard'"<CR>
 
 " Generate a tags file in the current directory using Exuberant ctags
 map <leader>e :silent :! ctags --recurse --sort=yes;sort tags > tmptags;mv tmptags tags<CR>:exe ":echo 'tags generated'"<CR>
