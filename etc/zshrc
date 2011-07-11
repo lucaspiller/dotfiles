@@ -23,6 +23,8 @@ source $ZSH/oh-my-zsh.sh
 alias bundle='nocorrect bundle'
 alias rspec='nocorrect rspec'
 
+alias t='tail -F'
+
 # rvm
 unsetopt auto_name_dirs
 if [ -s ~/.rvm/scripts/rvm ] ; then source ~/.rvm/scripts/rvm ; fi
