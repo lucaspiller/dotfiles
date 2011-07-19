@@ -27,7 +27,7 @@ set list
 set hlsearch
 set incsearch
 syntax on
-set foldmethod=manual
+set nofoldenable
 
 " Set hidden mode
 set hidden
@@ -143,3 +143,5 @@ set title
 " Erlang options
 let g:erlangManPath='/usr/local/Cellar/erlang/R13B04/share/man'
 let g:erlangHighlightBif=1
+let g:erlangCompleteFile="~/.vim/bundle/vimerl/autoload/erlang_complete.erl"
+let g:erlangCheckFile="~/.vim/bundle/vimerl/compiler/erlang_check.erl"

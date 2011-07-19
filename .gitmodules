@@ -12,4 +12,4 @@
 	url = https://github.com/sjbach/lusty
 [submodule "etc/vim/bundle/vimerl"]
 	path = etc/vim/bundle/vimerl
-	url = https://github.com/oscarh/vimerl.git
+	url = https://github.com/jimenezrick/vimerl.git

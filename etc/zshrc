@@ -24,6 +24,8 @@ alias bundle='nocorrect bundle'
 alias rspec='nocorrect rspec'
 alias 'make eunit'='nocorrect make eunit'
 
+alias t='tail -F'
+
 # rvm
 unsetopt auto_name_dirs
 if [ -s ~/.rvm/scripts/rvm ] ; then source ~/.rvm/scripts/rvm ; fi
