@@ -22,6 +22,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias bundle='nocorrect bundle'
 alias rspec='nocorrect rspec'
+alias 'make eunit'='nocorrect make eunit'
 
 # rvm
 unsetopt auto_name_dirs
@@ -31,3 +32,4 @@ export NODE_PATH=/usr/local/lib/node
 export EDITOR=vim
 
 ulimit -n 2056
+export PATH=/usr/local/bin:$PATH
