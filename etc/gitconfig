@@ -19,4 +19,4 @@
   name = Luca Spiller
   email = luca@stackednotion.com
 [merge]
-	conflictstyle = diff3
+  conflictstyle = diff3
