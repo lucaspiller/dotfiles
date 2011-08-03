@@ -98,7 +98,6 @@ map <leader>e :silent :! ctags --recurse --sort=yes;sort tags > tmptags;mv tmpta
 filetype off
 
 call pathogen#runtime_append_all_bundles()
-let coffee_compile_on_save = 0
 
 filetype plugin indent on
 
