@@ -73,6 +73,9 @@ map <leader>f :LustyFilesystemExplorer<cr>
 map <leader>b :LustyJuggler<cr>
 map <leader>g :LustyBufferGrep<cr>
 
+" Spellcheck
+map <leader>s :w!<CR>:!aspell -c %<CR>:e!<CR>:echo "spellcheck complete"<CR>
+
 " Make backspace work the way it should
 set backspace=2
 
