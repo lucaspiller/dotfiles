@@ -14,7 +14,6 @@
   excludesfile = /Users/luca/.gitignore_global
 [github]
   user = lucaspiller
-  token = cb95f8a91354fec7f4d6c26b321db6ff
 [user]
   name = Luca Spiller
   email = luca@stackednotion.com
