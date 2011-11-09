@@ -1,0 +1,11 @@
+"""
+""" Vundle
+"""
+
+" vundle
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" re-enable filetype plugins (disabled for vundle)
+filetype plugin indent on 
