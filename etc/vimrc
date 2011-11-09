@@ -2,10 +2,128 @@
 """ Vundle
 """
 
-" vundle
+" basic settings
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " re-enable filetype plugins (disabled for vundle)
 filetype plugin indent on 
+
+"""
+""" Basic editor settings
+"""
+
+" vim mode
+set nocompatible
+
+" use 2 spaces for tabs, turn on automatic indenting
+set tabstop=4 softtabstop=2 shiftwidth=2 expandtab
+
+" make tabs behave smarter, i.e. bs will delete
+" spaces inserted when the tab key is pressed
+set smarttab
+
+" make backspace delete over more stuff
+set backspace=indent,eol,start
+
+" make backspace and cursor keys wrap accordingly
+set whichwrap+=<,>,h,l
+
+" indent automatically based upon that of the last line
+set autoindent
+
+" smarter indenting for brackets, etc
+set smartindent
+
+"""
+""" Visual editor cues
+"""
+
+" syntax highlighting
+syntax on
+
+" highlight tabs and trailing spaces
+set listchars=trail:.,tab:>-
+set list
+
+" highlight search terms
+set hlsearch
+
+" find as you type searching
+set incsearch
+
+" make searches case insensitive
+set ignorecase
+
+"""
+""" Status bar tweaks
+"""
+
+" always show status bar
+set laststatus=2
+
+" show position in file on status bar
+set ruler
+
+" show line numbers
+set number
+
+"""
+""" File options
+"""
+
+" disable backup file (stops .bak files being written)j
+set nobackup
+
+" disable swap file (stops .swp files being written)
+set noswapfile
+
+"""
+""" Input options
+"""
+
+" enable mouse usage in terminal vim
+" (really useful for moving splits!)
+set mouse=a
+
+" enable tab completion in command line, and show a list
+" of options if more than one match is present
+set wildmode=list:longest
+
+" show buffer name in terminal title
+set title
+
+"""
+""" Keyboard mappings
+"""
+
+" set leader to comma
+let mapleader=','
+
+" remap : to ; (means you only need to press three keys to write a file)
+nnoremap ; :
+
+" jump more naturally between wrapped lines
+nnoremap j gj
+nnoremap k gk
+
+" easy window navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" unhighlight search
+nmap <silent> ,/ :nohlsearch<CR>
+
+" make editing .vimrc easier
+map <leader>z :sp ~/.vimrc<CR>
+map <leader>Z :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+
+" copy and paste to system clipboard
+map <leader>v "*p<CR>:exe ":echo 'pasted from clipboard'"<CR>
+map <leader>c "*y<CR>:exe ":echo 'copied to clipboard'"<CR>
+
+" spellcheck (requires aspell to be installed)
+map <leader>s :w!<CR>:!aspell -c %<CR>:e!<CR>:echo "spellcheck complete"<CR>
