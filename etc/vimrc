@@ -135,6 +135,9 @@ noremap <C-l> <C-w>l
 nnoremap <tab> %
 vnoremap <tab> %
 
+" shift-tab inserts a tab (useful with expandtab where tab inserts spaces)
+inoremap <silent> <S-tab> <ESC>:set noexpandtab<cr>a<tab><tab><ESC>:set expandtab<cr>a
+
 " set leader to comma
 let mapleader=','
 
