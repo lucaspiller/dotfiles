@@ -51,7 +51,7 @@ set showmatch
 syntax on
 
 " highlight tabs and trailing spaces
-set listchars=trail:.,tab:>-
+set listchars=tab:▸\ ,trail:·
 set list
 
 " highlight search terms
