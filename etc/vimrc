@@ -40,6 +40,9 @@ set smartindent
 " accordingly
 set scrolloff=5
 
+" jump to the matching bracket quickly when inserting a matching one
+set showmatch
+
 """
 """ Visual editor cues
 """
@@ -54,11 +57,18 @@ set list
 " highlight search terms
 set hlsearch
 
-" find as you type searching
-set incsearch
+"""
+""" Search options
+"""
 
 " make searches case insensitive
 set ignorecase
+
+" find as you type searching
+set incsearch
+
+" default to global replace (no g needed)
+set gdefault
 
 """
 """ Status bar tweaks
@@ -101,6 +111,9 @@ set wildmode=list:longest
 " show buffer name in terminal title
 set title
 
+" faster terminal rendering
+set ttyfast
+
 """
 """ Keyboard mappings
 """
@@ -114,6 +127,10 @@ nnoremap ; :
 " jump more naturally between wrapped lines
 nnoremap j gj
 nnoremap k gk
+
+" jump to begin/end etc matches by pressing tab rather than shift-5
+nnoremap <tab> %
+vnoremap <tab> %
 
 " easy window navigation
 map <C-h> <C-w>h
