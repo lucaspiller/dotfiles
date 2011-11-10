@@ -118,28 +118,28 @@ set ttyfast
 """ Keyboard mappings
 """
 
-" set leader to comma
-let mapleader=','
-
 " remap : to ; (means you only need to press three keys to write a file)
-nnoremap ; :
+noremap ; :
 
 " jump more naturally between wrapped lines
-nnoremap j gj
-nnoremap k gk
+noremap j gj
+noremap k gk
+
+" easy window navigation
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
 
 " jump to begin/end etc matches by pressing tab rather than shift-5
 nnoremap <tab> %
 vnoremap <tab> %
 
-" easy window navigation
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+" set leader to comma
+let mapleader=','
 
 " unhighlight search
-nmap <silent> ,/ :nohlsearch<CR>
+map <leader>/ :nohlsearch<CR>
 
 " make editing .vimrc easier
 map <leader>z :sp ~/.vimrc<CR>
