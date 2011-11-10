@@ -36,6 +36,10 @@ set autoindent
 " smarter indenting for brackets, etc
 set smartindent
 
+" always show this number of lines above / below the current line, scroll
+" accordingly
+set scrolloff=5
+
 """
 """ Visual editor cues
 """
@@ -78,6 +82,9 @@ set nobackup
 
 " disable swap file (stops .swp files being written)
 set noswapfile
+
+" read a externally changed file automatically rather than prompting
+set autoread
 
 """
 """ Input options
