@@ -7,8 +7,14 @@ filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+" let Vundle manage Vundle, required
+Bundle 'gmarik/vundle'
+
+" navigation
+Bundle 'LustyJuggler'
+
 " re-enable filetype plugins (disabled for vundle)
-filetype plugin indent on 
+filetype plugin indent on
 
 """
 """ Basic editor settings
@@ -154,3 +160,15 @@ map <leader>c "*y<CR>:exe ":echo 'copied to clipboard'"<CR>
 
 " spellcheck (requires aspell to be installed)
 map <leader>s :w!<CR>:!aspell -c %<CR>:e!<CR>:echo "spellcheck complete"<CR>
+
+"""
+""" Plugins
+"""
+
+""" LustyJuggler
+
+" show lusty juggler
+map <leader>b :LustyJuggler<cr>
+
+" delete all other buffers
+map <leader>B :BufOnly<CR>
