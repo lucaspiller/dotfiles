@@ -89,6 +89,9 @@ set ruler
 " show line numbers
 set number
 
+" show partially typed vim commands
+set showcmd
+
 """
 """ File options
 """
