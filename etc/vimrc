@@ -148,7 +148,7 @@ inoremap <silent> <S-tab> <ESC>:set noexpandtab<cr>a<tab><tab><ESC>:set expandta
 let mapleader=','
 
 " unhighlight search
-map <leader>/ :nohlsearch<CR>
+map <CR> :nohlsearch<CR>
 
 " make editing .vimrc easier
 map <leader>z :sp ~/.vimrc<CR>
