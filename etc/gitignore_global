@@ -1,1 +1,4 @@
-*.DS
+.DS_Store
+
+# Hammering too much in Vim
+;W
