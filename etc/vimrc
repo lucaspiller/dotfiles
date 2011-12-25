@@ -13,6 +13,9 @@ Bundle 'gmarik/vundle'
 " navigation
 Bundle 'LustyJuggler'
 
+" syntax
+Bundle 'jimenezrick/vimerl'
+
 " re-enable filetype plugins (disabled for vundle)
 filetype plugin indent on
 
@@ -48,6 +51,9 @@ set scrolloff=5
 
 " jump to the matching bracket quickly when inserting a matching one
 set showmatch
+
+" disable folding
+set nofoldenable
 
 """
 """ Visual editor cues
