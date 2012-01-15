@@ -63,7 +63,11 @@ set nofoldenable
 syntax on
 
 " highlight tabs and trailing spaces
-set listchars=tab:▸\ ,trail:·
+if has('mac')
+  set listchars=tab:▸\ ,trail:·
+elseif has('unix')
+  set listchars=tab:>>,trail:.
+endif
 set list
 
 " highlight search terms
