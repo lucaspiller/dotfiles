@@ -16,14 +16,14 @@ if [ -s ~/.rvm/scripts/rvm ] ; then source ~/.rvm/scripts/rvm ; fi
 export DISABLE_AUTO_UPDATE="true"
 plugins=(git)
 
-if [ `uname` = "Darwin" ]; then
+if [[ `uname` = "Darwin" ]]; then
   # dev
   export ZSH_THEME="macovsky"
 
   ulimit -n 2056
   export PATH=/usr/local/bin:$PATH
   export NODE_PATH=/usr/local/lib/node_modules
-elif [ `uname` == "Linux" ]; then
+elif [[ `uname` == "Linux" ]]; then
   # server
 fi
 
