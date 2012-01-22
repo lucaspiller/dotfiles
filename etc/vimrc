@@ -10,6 +10,9 @@ call vundle#rc()
 " let Vundle manage Vundle, required
 Bundle 'gmarik/vundle'
 
+" status bar
+Bundle 'Lokaltog/vim-powerline'
+
 " navigation
 Bundle 'LustyJuggler'
 
