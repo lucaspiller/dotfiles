@@ -15,6 +15,7 @@ Bundle 'LustyJuggler'
 
 " syntax
 Bundle 'jimenezrick/vimerl'
+Bundle 'kchmck/vim-coffee-script'
 
 " re-enable filetype plugins (disabled for vundle)
 filetype plugin indent on
