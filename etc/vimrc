@@ -24,6 +24,9 @@ filetype plugin indent on
 """ Basic editor settings
 """
 
+" colours
+colorscheme gardener
+
 " vim mode
 set nocompatible
 
