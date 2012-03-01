@@ -15,6 +15,7 @@ Bundle 'Lokaltog/vim-powerline'
 
 " navigation
 Bundle 'LustyJuggler'
+Bundle 'BufOnly.vim'
 
 " syntax
 Bundle 'jimenezrick/vimerl'
