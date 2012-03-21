@@ -21,6 +21,9 @@ Bundle 'BufOnly.vim'
 Bundle 'jimenezrick/vimerl'
 Bundle 'kchmck/vim-coffee-script'
 
+" rspec
+Bundle 'skwp/vim-rspec'
+
 " re-enable filetype plugins (disabled for vundle)
 filetype plugin indent on
 
@@ -193,3 +196,10 @@ map <leader>b :LustyJuggler<cr>
 
 " delete all other buffers
 map <leader>B :BufOnly<CR>
+
+""" VimRspec
+
+" disable default bindings, they don't work in terminal Vim
+let g:RspecKeymap=0
+
+map <S-R> :RunSpec<cr>
