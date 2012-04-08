@@ -33,7 +33,9 @@ filetype plugin indent on
 """
 
 " colours
-colorscheme gardener
+set background=dark
+let &t_Co=256
+colorscheme molokai
 
 " vim mode
 set nocompatible
