@@ -16,6 +16,7 @@ Bundle 'Lokaltog/vim-powerline'
 " navigation
 Bundle 'LustyJuggler'
 Bundle 'BufOnly.vim'
+Bundle 'majutsushi/tagbar'
 
 " syntax
 Bundle 'jimenezrick/vimerl'
@@ -202,4 +203,24 @@ map <leader>B :BufOnly<CR>
 " disable default bindings, they don't work in terminal Vim
 let g:RspecKeymap=0
 
+""" TagBar
+
+nmap <leader>t :TagbarToggle<CR>
+
+""" CoffeeTags
 map <S-R> :RunSpec<cr>
+if executable('coffeetags')
+  let g:tagbar_type_coffee = {
+        \ 'ctagsbin' : 'coffeetags',
+        \ 'ctagsargs' : '',
+        \ 'kinds' : [
+        \ 'f:functions',
+        \ 'o:object',
+        \ ],
+        \ 'sro' : ".",
+        \ 'kind2scope' : {
+        \ 'f' : 'object',
+        \ 'o' : 'object',
+        \ }
+        \ }
+endif
