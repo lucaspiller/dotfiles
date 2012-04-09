@@ -1,0 +1,8 @@
+#compdef tm
+
+_tm() {
+  sessions=( `tmux list-sessions | awk -F ":" ' { print $1 } '` )
+  _arguments "1: :($sessions)"
+}
+
+_tm "$@"
