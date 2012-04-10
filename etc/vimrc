@@ -137,6 +137,9 @@ set autoread
 " (really useful for moving splits!)
 set mouse=a
 
+" fix mouse support inside tmux
+set ttymouse=xterm2
+
 " enable tab completion in command line, and show a list
 " of options if more than one match is present
 set wildmode=list:longest
