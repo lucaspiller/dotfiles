@@ -42,3 +42,14 @@ fi
 export ZSH=$HOME/.oh-my-zsh
 
 source $ZSH/oh-my-zsh.sh
+
+# record directory in ~/.lastpwd
+record_pwd() {
+  pwd > ~/.lastpwd
+}
+chpwd_functions=(record_pwd)
+
+# go to last directory when opening a new shell
+if [[ -d `cat ~/.lastpwd` ]]; then
+  cd `cat ~/.lastpwd`
+fi
