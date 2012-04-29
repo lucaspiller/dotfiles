@@ -21,6 +21,10 @@ Bundle 'majutsushi/tagbar'
 " syntax
 Bundle 'jimenezrick/vimerl'
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'nono/vim-handlebars'
+
+" yankring
+Bundle 'YankRing.vim'
 
 " rspec
 Bundle 'skwp/vim-rspec'
