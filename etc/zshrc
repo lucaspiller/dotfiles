@@ -2,6 +2,7 @@ alias bundle='nocorrect bundle'
 alias rspec='nocorrect rspec'
 alias 'make eunit'='nocorrect make eunit'
 alias t='tail -F'
+alias sr='find . -type f|xargs perl -pi -e '
 
 export EDITOR=vim
 
