@@ -16,7 +16,6 @@ Bundle 'Lokaltog/vim-powerline'
 " navigation
 Bundle 'LustyJuggler'
 Bundle 'BufOnly.vim'
-Bundle 'majutsushi/tagbar'
 
 " syntax
 Bundle 'jimenezrick/vimerl'
@@ -26,8 +25,6 @@ Bundle 'nono/vim-handlebars'
 " yankring
 Bundle 'YankRing.vim'
 
-" rspec
-Bundle 'skwp/vim-rspec'
 
 " re-enable filetype plugins (disabled for vundle)
 filetype plugin indent on
@@ -206,30 +203,3 @@ map <leader>b :LustyJuggler<cr>
 
 " delete all other buffers
 map <leader>B :BufOnly<CR>
-
-""" VimRspec
-
-" disable default bindings, they don't work in terminal Vim
-let g:RspecKeymap=0
-
-""" TagBar
-
-nmap <leader>t :TagbarToggle<CR>
-
-""" CoffeeTags
-map <S-R> :RunSpec<cr>
-if executable('coffeetags')
-  let g:tagbar_type_coffee = {
-        \ 'ctagsbin' : 'coffeetags',
-        \ 'ctagsargs' : '',
-        \ 'kinds' : [
-        \ 'f:functions',
-        \ 'o:object',
-        \ ],
-        \ 'sro' : ".",
-        \ 'kind2scope' : {
-        \ 'f' : 'object',
-        \ 'o' : 'object',
-        \ }
-        \ }
-endif
