@@ -22,6 +22,7 @@ Bundle 'Command-T'
 Bundle 'jimenezrick/vimerl'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'nono/vim-handlebars'
+Bundle 'msanders/snipmate.vim'
 
 " yankring
 Bundle 'YankRing.vim'
