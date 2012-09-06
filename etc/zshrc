@@ -12,17 +12,11 @@ fpath=(~/.zsh/completions $fpath)
 # show completion menu when number of options is at least 2
 zstyle ':completion:*' menu select=2
 
-# rvm
-unsetopt auto_name_dirs
-if [ -s ~/.rvm/scripts/rvm ] ; then source ~/.rvm/scripts/rvm ; fi
-
 tm() {
   [[ -z "$1" ]] && { echo "usage: tm <session>" >&2; return 1; }
   tmux has -t $1 && tmux attach -d -t $1 || tmux new -s $1
 }
 
-# rbenv
-#eval "$(rbenv init -)"
 
 # ohmyzsh options
 export DISABLE_AUTO_UPDATE="true"
@@ -54,3 +48,5 @@ chpwd_functions=(record_pwd)
 if [[ -d `cat ~/.lastpwd` ]]; then
   cd `cat ~/.lastpwd`
 fi
+
+export PATH="/usr/local/sbin:$PATH"
