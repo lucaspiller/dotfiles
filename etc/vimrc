@@ -30,9 +30,6 @@ Bundle 'YankRing.vim'
 " search with ack
 Bundle 'ack.vim'
 
-" align
-Bundle 'Align'
-
 " re-enable filetype plugins (disabled for vundle)
 filetype plugin indent on
 
@@ -151,6 +148,14 @@ set ttymouse=xterm2
 " enable tab completion in command line, and show a list
 " of options if more than one match is present
 set wildmode=list:longest
+
+" ignore certain files for wildcard completion
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,*.beam
+set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd
+set wildignore+=.sass-cache,.DS_Store,.bundle
+set wildignore+=*.rbc,*.scssc,*.sassc
+set wildignore+=*/spec/dummy/*
+set wildignore+=*/tmp/*
 
 " show buffer name in terminal title
 set title
