@@ -196,6 +196,8 @@ map <leader>Z :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloade
 map <leader>v "*p<CR>:exe ":echo 'pasted from clipboard'"<CR>
 map <leader>c "*y<CR>:exe ":echo 'copied to clipboard'"<CR>
 
+" remove whitespace at end of lines
+map <leader>s :%s/\s\+$//e<CR>
 
 """
 """ Plugins
