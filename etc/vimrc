@@ -16,7 +16,7 @@ Bundle 'Lokaltog/vim-powerline'
 " navigation
 Bundle 'LustyJuggler'
 Bundle 'BufOnly.vim'
-Bundle 'Command-T'
+Bundle 'kien/ctrlp.vim'
 
 " syntax
 Bundle 'jimenezrick/vimerl'
@@ -205,3 +205,8 @@ map <leader>b :LustyJuggler<cr>
 
 " delete all other buffers
 map <leader>B :BufOnly<CR>
+
+""" Ctrl-P
+
+" map to ,t (Ctrl-P is used by YankRing)
+let g:ctrlp_map = ',t'
