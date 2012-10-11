@@ -196,8 +196,6 @@ map <leader>Z :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloade
 map <leader>v "*p<CR>:exe ":echo 'pasted from clipboard'"<CR>
 map <leader>c "*y<CR>:exe ":echo 'copied to clipboard'"<CR>
 
-" spellcheck (requires aspell to be installed)
-map <leader>s :w!<CR>:!aspell -c %<CR>:e!<CR>:echo "spellcheck complete"<CR>
 
 """
 """ Plugins
