@@ -226,3 +226,9 @@ let g:html_indent_style1 = "inc"
 
 " map to ,t (Ctrl-P is used by YankRing)
 let g:ctrlp_map = ',t'
+
+
+""" Powerline
+
+" use fancy symbols
+let g:Powerline_symbols = 'fancy'
