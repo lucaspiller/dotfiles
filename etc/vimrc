@@ -22,11 +22,16 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'jimenezrick/vimerl'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'nono/vim-handlebars'
-Bundle 'msanders/snipmate.vim'
+Bundle 'pangloss/vim-javascript'
 
 " yankring
 Bundle 'YankRing.vim'
 
+" search with ack
+Bundle 'ack.vim'
+
+" align
+Bundle 'Align'
 
 " re-enable filetype plugins (disabled for vundle)
 filetype plugin indent on
@@ -205,6 +210,12 @@ map <leader>b :LustyJuggler<cr>
 
 " delete all other buffers
 map <leader>B :BufOnly<CR>
+
+""" Vim Javascript
+
+let g:html_indent_inctags = "html,body,head,tbody"
+let g:html_indent_script1 = "inc"
+let g:html_indent_style1 = "inc"
 
 """ Ctrl-P
 
