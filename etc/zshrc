@@ -18,7 +18,6 @@ tm() {
   tmux has -t $1 && tmux attach -d -t $1 || tmux new -s $1
 }
 
-
 # ohmyzsh options
 export DISABLE_AUTO_UPDATE="true"
 plugins=(git)
@@ -46,8 +45,8 @@ record_pwd() {
 chpwd_functions=(record_pwd)
 
 # go to last directory when opening a new shell
-if [[ -d `cat ~/.lastpwd` ]]; then
-  cd `cat ~/.lastpwd`
+if [[ -d "`cat ~/.lastpwd`" ]]; then
+  cd "`cat ~/.lastpwd`"
 fi
 
 export PATH="/usr/local/sbin:$PATH"
