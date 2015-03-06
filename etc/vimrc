@@ -4,33 +4,35 @@
 
 " basic settings
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim/
+call vundle#begin()
 
 " let Vundle manage Vundle, required
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 
 " status bar
-Bundle 'Lokaltog/vim-powerline'
+Plugin 'Lokaltog/vim-powerline'
 
 " navigation
-Bundle 'LustyJuggler'
-Bundle 'BufOnly.vim'
-Bundle 'kien/ctrlp.vim'
+Plugin 'LustyJuggler'
+Plugin 'BufOnly.vim'
 
 " syntax
-Bundle 'jimenezrick/vimerl'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'nono/vim-handlebars'
-Bundle 'pangloss/vim-javascript'
+Plugin 'jimenezrick/vimerl'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'nono/vim-handlebars'
+Plugin 'pangloss/vim-javascript'
+Plugin 'slim-template/vim-slim'
+Plugin 'fatih/vim-go'
+Plugin 'puppetlabs/puppet-syntax-vim'
+"Plugin 'majutsushi/tagbar'
 
 " yankring
-Bundle 'YankRing.vim'
-
-" search with ack
-Bundle 'ack.vim'
+Plugin 'YankRing.vim'
+Plugin 'skalnik/vim-vroom'
 
 " re-enable filetype plugins (disabled for vundle)
+call vundle#end()
 filetype plugin indent on
 
 """
@@ -46,7 +48,7 @@ colorscheme molokai
 set nocompatible
 
 " use 2 spaces for tabs, turn on automatic indenting
-set tabstop=4 softtabstop=2 shiftwidth=2 expandtab
+set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
 " make tabs behave smarter, i.e. bs will delete
 " spaces inserted when the tab key is pressed
@@ -73,6 +75,7 @@ set showmatch
 
 " disable folding
 set nofoldenable
+set foldmethod=manual
 
 """
 """ Visual editor cues
@@ -204,6 +207,10 @@ map <leader>c "*y<CR>:exe ":echo 'copied to clipboard'"<CR>
 " remove whitespace at end of lines
 map <leader>s :%s/\s\+$//e<CR>
 
+" highlight column 80
+highlight ColorColumn ctermbg=235 guibg=#2c2d27
+let &colorcolumn="80"
+
 """
 """ Plugins
 """
@@ -216,6 +223,9 @@ map <leader>b :LustyJuggler<cr>
 " delete all other buffers
 map <leader>B :BufOnly<CR>
 
+" tagbar
+map <leader>t :TagbarToggle<CR>
+
 """ Vim Javascript
 
 let g:html_indent_inctags = "html,body,head,tbody"
@@ -226,9 +236,3 @@ let g:html_indent_style1 = "inc"
 
 " map to ,t (Ctrl-P is used by YankRing)
 let g:ctrlp_map = ',t'
-
-
-""" Powerline
-
-" use fancy symbols
-let g:Powerline_symbols = 'fancy'
