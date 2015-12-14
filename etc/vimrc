@@ -42,7 +42,8 @@ filetype plugin indent on
 " colours
 set background=dark
 let &t_Co=256
-colorscheme molokai
+colorscheme onedark
+set cursorline
 
 " vim mode
 set nocompatible
