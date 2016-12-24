@@ -1,4 +1,6 @@
 .DS_Store
+.byebug_history
+.ruby-version
 
 # Hammering too much in Vim
 ;W

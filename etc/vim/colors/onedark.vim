@@ -499,7 +499,7 @@ if !s:low_color
   hi FoldColumn ctermbg=234
   hi SignColumn ctermbg=236
   hi CursorColumn ctermbg=234
-  hi CursorLine ctermbg=234
+  hi CursorLine ctermbg=236
   hi SpecialKey ctermbg=234
   exec "hi NonText ctermbg=".g:onedark_background_color_256
   exec "hi LineNr ctermbg=".g:onedark_background_color_256

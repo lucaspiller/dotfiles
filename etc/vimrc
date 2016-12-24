@@ -11,25 +11,28 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " status bar
-Plugin 'Lokaltog/vim-powerline'
+Plugin 'vim-airline/vim-airline'
 
 " navigation
-Plugin 'LustyJuggler'
-Plugin 'BufOnly.vim'
+"Plugin 'LustyJuggler'
+"Plugin 'BufOnly.vim'
+"Plugin 'majutsushi/tagbar'
 
 " syntax
-Plugin 'jimenezrick/vimerl'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'nono/vim-handlebars'
+"Plugin 'jimenezrick/vimerl'
+"Plugin 'kchmck/vim-coffee-script'
+"Plugin 'nono/vim-handlebars'
 Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
 Plugin 'slim-template/vim-slim'
+Plugin 'yaymukund/vim-rabl'
 Plugin 'fatih/vim-go'
-Plugin 'puppetlabs/puppet-syntax-vim'
-"Plugin 'majutsushi/tagbar'
+"Plugin 'puppetlabs/puppet-syntax-vim'
+"Plugin 'leafgarland/typescript-vim'
 
 " yankring
 Plugin 'YankRing.vim'
-Plugin 'skalnik/vim-vroom'
+"Plugin 'skalnik/vim-vroom'
 
 " re-enable filetype plugins (disabled for vundle)
 call vundle#end()
