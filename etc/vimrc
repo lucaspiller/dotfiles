@@ -13,26 +13,33 @@ Plugin 'gmarik/Vundle.vim'
 " status bar
 Plugin 'vim-airline/vim-airline'
 
+" ide
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'w0rp/ale'
+
 " navigation
-"Plugin 'LustyJuggler'
-"Plugin 'BufOnly.vim'
-"Plugin 'majutsushi/tagbar'
+Plugin 'Shougo/denite.nvim'
 
 " syntax
-"Plugin 'jimenezrick/vimerl'
-"Plugin 'kchmck/vim-coffee-script'
-"Plugin 'nono/vim-handlebars'
+Plugin 'kchmck/vim-coffee-script'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'slim-template/vim-slim'
 Plugin 'yaymukund/vim-rabl'
 Plugin 'fatih/vim-go'
-"Plugin 'puppetlabs/puppet-syntax-vim'
+
+" typescript
 "Plugin 'leafgarland/typescript-vim'
+"Plugin 'Quramy/tsuquyomi'
+"Plugin 'mhartington/vim-typings'
+
+Plugin 'jason0x43/vim-js-indent'
+"Plugin 'HerringtonDarkholme/yats'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'mhartington/nvim-typescript'
 
 " yankring
-Plugin 'YankRing.vim'
-"Plugin 'skalnik/vim-vroom'
+"Plugin 'YankRing.vim'
 
 " re-enable filetype plugins (disabled for vundle)
 call vundle#end()
@@ -46,7 +53,8 @@ filetype plugin indent on
 set background=dark
 let &t_Co=256
 colorscheme onedark
-set cursorline
+" Temporary disabled due to performance issues - iTerm2 has this built in
+"set cursorline
 
 " vim mode
 set nocompatible
@@ -150,7 +158,9 @@ set autoread
 set mouse=a
 
 " fix mouse support inside tmux
-set ttymouse=xterm2
+if !has('nvim')
+  set ttymouse=xterm2
+end
 
 " enable tab completion in command line, and show a list
 " of options if more than one match is present
@@ -198,15 +208,17 @@ inoremap <silent> <S-tab> <ESC>:set noexpandtab<cr>a<tab><tab><ESC>:set expandta
 let mapleader=','
 
 " unhighlight search
-map <CR> :nohlsearch<CR>
+map <leader>/ :nohlsearch<CR>
 
 " make editing .vimrc easier
 map <leader>z :sp ~/.vimrc<CR>
 map <leader>Z :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
 " copy and paste to system clipboard
-map <leader>v "*p<CR>:exe ":echo 'pasted from clipboard'"<CR>
-map <leader>c "*y<CR>:exe ":echo 'copied to clipboard'"<CR>
+map <leader>v "*p<CR>
+" strip newlines when pasting
+map <leader>vv :let @* = substitute(@*, "\n", " ", "g")<CR>:let @* = join(["\"", @*, "\""], "")<CR>"*p
+map <leader>c "*y<CR>
 
 " remove whitespace at end of lines
 map <leader>s :%s/\s\+$//e<CR>
@@ -219,10 +231,6 @@ let &colorcolumn="80"
 """ Plugins
 """
 
-""" LustyJuggler
-
-" show lusty juggler
-map <leader>b :LustyJuggler<cr>
 
 " delete all other buffers
 map <leader>B :BufOnly<CR>
@@ -240,3 +248,40 @@ let g:html_indent_style1 = "inc"
 
 " map to ,t (Ctrl-P is used by YankRing)
 let g:ctrlp_map = ',t'
+
+" Ack.vim
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+" Denite
+map <leader>b :Denite buffer<CR>
+map <C-t> :Denite file_rec<CR>
+call denite#custom#var('file_rec', 'command',
+  \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+
+call denite#custom#map(
+      \ 'insert',
+      \ '<C-j>',
+      \ '<denite:move_to_next_line>',
+      \ 'noremap'
+      \)
+call denite#custom#map(
+      \ 'insert',
+      \ '<C-k>',
+      \ '<denite:move_to_previous_line>',
+      \ 'noremap'
+      \)
+
+" Deoplete
+call deoplete#enable()
+let g:deoplete#max_menu_width=80
+
+" ALE
+let g:ale_linters = {
+\   'typescript': ['tsserver'],
+\}
+let g:ale_lint_on_text_changed = 'never'
+
+
+set timeout timeoutlen=1000 ttimeoutlen=10
