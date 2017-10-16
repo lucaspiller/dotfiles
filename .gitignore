@@ -1,8 +1,8 @@
-etc/vim/backups/*
-!etc/vim/backups/placeholder
-etc/vim/.netrwhist
-etc/vim/tmp
-etc/vim/bundle
+vim/.vim/backups/*
+!vim/.vim/backups/placeholder
+vim/.vim/.netrwhist
+vim/.vim/tmp
+vim/.vim/bundle
 *.swp
 *.swo
 .DS*

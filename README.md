@@ -1,8 +1,8 @@
-Run ./install.sh to symlink dotfiles from ~/dotfiles/etc/ to ~/
+# dotfiles
 
-To autoupdate add the following to your ~/.(ba|z)shrc:
+Dotfiles managed by [stow](https://www.gnu.org/software/stow/).
 
-~/.dotfiles/scripts/update.sh &
+Run ./install.sh to symlink dotfiles from ~/dotfiles/ to ~/
 
 Be aware - if you are going to use these dotfiles, make sure you change my personal settings.
 
@@ -12,9 +12,7 @@ gitconfig is set up for my name and email.
 
 Thanks.
 
-Based upon http://github.com/barrym/dotfiles
-
-# Annotated .vimrc
+# Annotated .vimrc (OUTDATED)
 
 ""
 "" Vundle
