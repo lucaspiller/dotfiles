@@ -3,6 +3,7 @@ vim/.vim/backups/*
 vim/.vim/.netrwhist
 vim/.vim/tmp
 vim/.vim/bundle
+vim/.config/nvim/.netrwhist
 *.swp
 *.swo
 .DS*

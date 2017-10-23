@@ -37,6 +37,7 @@ Plugin 'jason0x43/vim-js-indent'
 "Plugin 'HerringtonDarkholme/yats'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'mhartington/nvim-typescript'
+Plugin 'hzchirs/vim-material'
 
 " yankring
 "Plugin 'YankRing.vim'
@@ -50,9 +51,8 @@ filetype plugin indent on
 """
 
 " colours
-set background=dark
-let &t_Co=256
-colorscheme onedark
+set termguicolors
+colorscheme vim-material
 " Temporary disabled due to performance issues - iTerm2 has this built in
 "set cursorline
 
@@ -282,6 +282,5 @@ let g:ale_linters = {
 \   'typescript': ['tsserver'],
 \}
 let g:ale_lint_on_text_changed = 'never'
-
 
 set timeout timeoutlen=1000 ttimeoutlen=10
