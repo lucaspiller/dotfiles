@@ -1,0 +1,177 @@
+[bar/top]
+width = 100%
+height = 35
+radius = 0
+fixed-center = true
+
+background = #ff282c34
+foreground = #ffaab2bf
+
+line-size = 3
+line-color = #f00
+
+border-size = 0
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 2
+module-margin-right = 2
+
+font-0 = ubuntu:regular:size=14;2
+font-1 = MaterialIcons:size=18;5
+font-2 = NotoSans-Regular:size=6;0
+font-3 = Termsynu:size=6;-1
+font-4 = FontAwesome:size=14;3
+
+modules-left = i3
+modules-center = music
+modules-right = cpu memory date powermenu
+
+tray-position = right
+tray-padding = 2
+tray-transparent = true
+tray-background = #0063ff
+
+scroll-up = i3wm-wsnext
+scroll-down = i3wm-wsprev
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+pin-workspaces = true
+
+ws-icon-0 = 1:web;
+ws-icon-1 = 2:console;
+ws-icon-2 = 3:music;
+ws-icon-3 = 10:slack;
+ws-icon-default = 
+
+strip-wsnumbers = true
+label-dimmed-underline = ${root.background}
+
+label-focused = %icon%  %name%
+label-focused-foreground = #aab2bf
+label-focused-underline = #61afef
+label-focused-font = 0
+label-focused-padding = 2
+
+label-unfocused = %icon%  %name%
+label-unfocused-underline = #282c34
+label-unfocused-font = 0
+label-unfocused-padding = 2
+
+label-urgent = %icon%  %name%
+label-urgent-foreground = #000000
+label-urgent-background = #bd2c40
+label-urgent-underline = #9b0a20
+label-urgent-font = 0
+label-urgent-padding = 2
+
+label-visible = %icon%  %name%
+label-visible-foreground = #55ffffff
+label-visible-font = 0
+label-visible-padding = 2
+
+[module/music]
+type = custom/script
+interval = 1
+
+label = %output:0:100:...%
+exec = ~/.config/polybar/mpris.sh
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+
+format = <label> <ramp-coreload>
+
+label = CPU
+label-font = 0
+label-foreground = #99
+
+ramp-coreload-0 = ▁
+ramp-coreload-0-font = 2
+ramp-coreload-0-foreground = #98c379
+ramp-coreload-1 = ▂
+ramp-coreload-1-font = 2
+ramp-coreload-1-foreground = #aaff77
+ramp-coreload-2 = ▃
+ramp-coreload-2-font = 2
+ramp-coreload-2-foreground = #aaff77
+ramp-coreload-3 = ▄
+ramp-coreload-3-font = 2
+ramp-coreload-3-foreground = #aaff77
+ramp-coreload-4 = ▅
+ramp-coreload-4-font = 2
+ramp-coreload-4-foreground = #fba922
+ramp-coreload-5 = ▆
+ramp-coreload-5-font = 2
+ramp-coreload-5-foreground = #fba922
+ramp-coreload-6 = ▇
+ramp-coreload-6-font = 2
+ramp-coreload-6-foreground = #ff5555
+ramp-coreload-7 = █
+ramp-coreload-7-font = 2
+ramp-coreload-7-foreground = #ff5555
+
+[module/memory]
+type = internal/memory
+interval = 5
+format = <label> <bar-used>
+
+label = RAM
+label-font = 0
+label-foreground = #99
+
+bar-used-width = 30
+bar-used-gradient = true
+bar-used-foreground-0 = #98c379
+bar-used-foreground-1 = #2f8419
+bar-used-foreground-2 = #f5a70a
+bar-used-foreground-3 = #ed5456
+bar-used-indicator = █
+bar-used-indicator-font = 3
+bar-used-indicator-foreground = #fff
+bar-used-fill = █
+bar-used-fill-font = 3
+bar-used-empty = █
+bar-used-empty-font = 3
+bar-used-empty-foreground = #44
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = %a %d %b
+time = %H:%M
+
+format-prefix =
+format-prefix-foreground =
+format-underline =
+
+label =  %{F#99}%date%  %{F#fff}%time%
+
+[module/powermenu]
+type = custom/menu
+
+format-spacing = 5
+
+label-open = 
+label-close = 
+
+menu-0-0 = poweroff
+menu-0-0-exec = systemctl poweroff
+
+menu-0-1 = "     suspend    "
+menu-0-1-exec = systemctl suspend
+
+[settings]
+screenchange-reload = true
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+; vim:ft=dosini
