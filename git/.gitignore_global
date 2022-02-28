@@ -1,6 +1,13 @@
 .DS_Store
 .byebug_history
 .ruby-version
+.envrc
 
 # Hammering too much in Vim
 ;W
+
+.ensime
+.ensime_cache/
+ensime.sbt
+*.code-workspace
+.vscode

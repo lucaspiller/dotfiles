@@ -1,5 +1,3 @@
-[alias]
-  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 [apply]
   whitespace = nowarn
 [branch]
@@ -11,7 +9,7 @@
   ui = true
 [core]
   pager = less -FXRS
-  excludesfile = /Users/luca/.gitignore_global
+  excludesfile = /home/luca/.gitignore_global
 [github]
   user = lucaspiller
 [user]
@@ -19,3 +17,5 @@
   email = luca@stackednotion.com
 [merge]
   conflictstyle = diff3
+[credential]
+  helper = /usr/lib/git-core/git-credential-libsecret

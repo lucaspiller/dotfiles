@@ -1,0 +1,26 @@
+#use_kerl () {
+#    . ~/.kerl/installations/$1/activate
+#}
+#
+#use_kiex () {
+#    test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
+#    kiex use $1
+#}
+
+use_nvm() {
+  local node_version=$1
+
+  nvm_sh=/usr/share/nvm/nvm.sh
+  source $nvm_sh --no-use
+  nvm use $node_version
+}
+
+use_ruby() {
+  local ruby_root=$HOME/.local/share/rbenv/versions/$1
+  load_prefix "$ruby_root"
+  layout_ruby
+}
+
+#use_dart() {
+#  . ~/.dvm/scripts/dvm
+#}
