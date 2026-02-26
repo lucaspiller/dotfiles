@@ -10,4 +10,10 @@
 .ensime_cache/
 ensime.sbt
 *.code-workspace
+
 .vscode
+.nvmrc
+.direnv
+.cursorrules
+.cursor/rules/_*.mdc
+.docker.env
