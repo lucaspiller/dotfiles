@@ -1,12 +1,15 @@
 #!/bin/sh
 
-if ! which "stow" > /dev/null; then
-	echo "You need to install the 'stow' command first"
+set -eu
+
+if ! command -v stow >/dev/null 2>&1; then
+	echo "You need to install the 'stow' command first."
 	exit 1
 fi
 
 for dir in *; do
-	if [ -d "$dir" ]; then
-		stow -t ~ --override "$dir/*" "$dir"
+	if [ -d "$dir" ] && [ -x "$dir/install.sh" ]; then
+		echo "===> Installing $dir"
+		"./$dir/install.sh"
 	fi
 done
