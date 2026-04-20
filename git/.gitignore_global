@@ -17,3 +17,6 @@ ensime.sbt
 .cursorrules
 .cursor/rules/_*.mdc
 .docker.env
+
+.worktrees
+docs/local
